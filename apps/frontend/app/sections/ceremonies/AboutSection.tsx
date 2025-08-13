@@ -13,36 +13,5 @@ export const AboutSection = () => {
   console.log("ceremonyStats", ceremonyStats);
 
   return null;
-  return (
-    <div className="flex flex-col gap-5">
-      {[].map((about, index) => (
-        <Card key={index} size="sm">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            <AttributeCard title="Parameters" value={about.title} size="sm" />
-            <AttributeCard
-              title="Commit Hash"
-              value={shortAddress(about.commitHash)}
-              removeBorderLeft
-              size="sm"
-            />
-            <AttributeCard
-              className="col-span-2"
-              title="Template Link"
-              value={
-                <Link
-                  href={about.templateLink}
-                  target="_blank"
-                  className="underline"
-                >
-                  {about.templateLink}
-                </Link>
-              }
-              removeBorderBottom
-              size="sm"
-            />
-          </div>
-        </Card>
-      ))}
-    </div>
-  );
+  
 };
