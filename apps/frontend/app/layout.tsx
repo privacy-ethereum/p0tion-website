@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.svg",
   },
+  openGraph: {
+    images: "/og-image.png",
+  },
 };
 
 const poppins = Poppins({

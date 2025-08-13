@@ -82,6 +82,7 @@ export const Header = () => {
               alt="logo p0tion"
               width={165}
               height={48}
+              unoptimized
             />
           </Link>
           {isLoggedIn ? (
