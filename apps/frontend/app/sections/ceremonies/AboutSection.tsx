@@ -1,6 +1,5 @@
 import { AttributeCard } from "@/app/components/AttributeCard";
 import { Card } from "@/app/components/ui/Card";
-import { useGetCeremonyAbout } from "@/app/hooks/useGetCeremonyAbout";
 import { useGetCeremonyStats } from "@/app/hooks/useGetCeremonyData";
 import { shortAddress } from "@/app/lib/utils";
 import Link from "next/link";
