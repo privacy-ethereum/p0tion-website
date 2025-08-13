@@ -76,7 +76,7 @@ export const ContributionsSection = ({ id }: { id: string }) => {
                   <div className="flex flex-col gap-1">
                     <TableHeader>{TableLabels[1].label}</TableHeader>
                     <span className="text-sm text-black">
-                      [mapping of user - participant_id]
+                      N/A
                     </span>
                   </div>
 

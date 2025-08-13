@@ -175,7 +175,7 @@ export default function ProjectPage() {
             {
               id: "about",
               title: "About",
-              content: <AboutSection />,
+              content: null,
             },
             {
               id: "download-zkey",
