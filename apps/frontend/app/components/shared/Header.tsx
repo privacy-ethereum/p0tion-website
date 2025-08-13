@@ -96,6 +96,7 @@ export const Header = () => {
           ) : (
             <Button
               className="uppercase"
+              disabled
               onClick={() => setIsOpenLoginModal(true)}
             >
               Login
