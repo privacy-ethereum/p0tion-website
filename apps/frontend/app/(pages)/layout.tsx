@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import { Header } from "./components/shared/Header";
-import { Footer } from "./components/shared/Footer";
+import "./../globals.css";
 import { Poppins, Roboto_Mono } from "next/font/google";
-import { QueryClientProviderLayout } from "./components/layouts/QueryClientProviderLayout";
+import { QueryClientProviderLayout } from "../components/layouts/QueryClientProviderLayout";
+import { Footer } from "../components/shared/Footer";
+import { Header } from "../components/shared/Header";
 
 export const metadata: Metadata = {
   title: "P0tion",

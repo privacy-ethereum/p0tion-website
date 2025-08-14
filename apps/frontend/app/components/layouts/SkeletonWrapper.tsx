@@ -1,3 +1,5 @@
+import { Fragment } from "react";
+
 interface SkeletonWrapperProps {
   isLoading: boolean;
   children?: React.ReactNode;
@@ -15,7 +17,7 @@ export const SkeletonWrapper = ({
     return (
       <>
         {Array.from({ length: items }).map((_, index) => (
-          <div key={index}>{placeholder || "Loading..."}</div>
+          <Fragment key={index}>{placeholder || "Loading..."}</Fragment>
         ))}
       </>
     );

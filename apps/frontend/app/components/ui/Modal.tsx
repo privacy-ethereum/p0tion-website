@@ -4,9 +4,10 @@ import { classed, VariantProps } from "@tw-classed/react";
 import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
 import { X } from "lucide-react";
+import { useBodyScrollLock } from "@/app/hooks/useBodyScrollLock";
 
 const ModalComponent = classed.div(
-  "fixed inset-0 z-50 bg-black/50",
+  "fixed inset-0 z-50 bg-black/70",
   "flex items-center justify-center p-4",
   {
     variants: {
@@ -28,10 +29,10 @@ const ModalContent = classed.div(
 );
 
 const ModalClose = classed.button(
-  "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background",
-  "transition-opacity hover:opacity-100",
+  "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background z-[2]",
+  "transition-opacity hover:opacity-100 cursor-pointer",
   "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  "disabled:pointer-events-none"
+  "disabled:pointer-events-none disabled:cursor-default"
 );
 
 const ModalHeader = classed.div(
@@ -77,6 +78,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(
     },
     ref
   ) => {
+    useBodyScrollLock(isOpen);
+    
     if (!isOpen) return null;
 
     return (

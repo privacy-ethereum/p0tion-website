@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.svg-crisp {
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+  text-rendering: optimizeSpeed;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
