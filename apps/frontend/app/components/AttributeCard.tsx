@@ -23,6 +23,7 @@ export const AttributeCard = ({
   size = "md",
   isLoading = false,
   className,
+  timeInMinutes = false,
 }: {
   title: string;
   value: ReactNode;
@@ -31,7 +32,21 @@ export const AttributeCard = ({
   size?: "sm" | "md";
   isLoading?: boolean;
   className?: string;
+  timeInMinutes?: boolean;
 }) => {
+  const formatTime = (val: ReactNode): ReactNode => {
+    if (!timeInMinutes || typeof val !== 'number') return val;
+    
+    if (val > 60) {
+      const minutes = Math.floor(val / 60);
+      const seconds = val % 60;
+      return seconds > 0 ? `${minutes}m ${seconds}s` : `${minutes}m`;
+    }
+    
+    return `${val}s`;
+  };
+
+  const displayValue = formatTime(value);
   return (
     <Card
       variant="secondary"
@@ -51,7 +66,7 @@ export const AttributeCard = ({
             })}
           />
         ) : (
-          <AttributeValue size={size}>{value}</AttributeValue>
+          <AttributeValue size={size}>{displayValue}</AttributeValue>
         )}
       </div>
     </Card>

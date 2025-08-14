@@ -180,6 +180,7 @@ const fetchValidatedProjectData = async (slug: string) => {
     validatedProjectData,
     beaconValue,
     beaconHash,
+    participants,
   };
 };
 

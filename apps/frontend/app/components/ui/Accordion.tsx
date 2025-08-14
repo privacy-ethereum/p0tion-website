@@ -24,7 +24,7 @@ const AccordionComponent = classed.div(
 );
 
 const AccordionTrigger = classed.button(
-  "flex w-full items-center justify-between p-4 text-left",
+  "flex w-full items-center justify-between p-4 text-left cursor-pointer",
   "font-poppins text-lg lg:text-2xl font-medium",
   "focus:outline-none"
 );

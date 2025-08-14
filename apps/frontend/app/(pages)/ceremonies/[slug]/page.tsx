@@ -12,22 +12,30 @@ import { Button } from "@/app/components/ui/Button";
 import { LiveStatsSection } from "@/app/sections/ceremonies/LiveStatsSection";
 import { ContributionsSection } from "@/app/sections/ceremonies/ContributionsSection";
 import { DownloadZkeySection } from "@/app/sections/ceremonies/DownloadZkeySection";
-import { useGetCeremonyByPrefix } from "@/app/hooks/useGetCeremonyData";
+import {
+  useGetCeremonyArtifacts,
+  useGetCeremonyByPrefix,
+} from "@/app/hooks/useGetCeremonyData";
 import { CeremonyData, CeremonyState } from "@/app/types";
 import { SkeletonWrapper } from "@/app/components/layouts/SkeletonWrapper";
 import { cn } from "@/app/lib/utils";
 import { useState } from "react";
 import { ContributeCliModal } from "@/app/components/modals/ContributeCliModal";
 import Link from "next/link";
+import { AboutSection } from "@/app/sections/ceremonies/AboutSection";
 
 const CeremonyOverview = ({
   isLoading,
-  ceremony,
   className,
+  totalParticipants = 0,
+  penalty = "N/A",
+  peopleInQueue = 0,
 }: {
   isLoading: boolean;
-  ceremony: CeremonyData | undefined;
   className?: string;
+  totalParticipants: number;
+  penalty: string | number;
+  peopleInQueue: number;
 }) => {
   return (
     <div className={cn("flex flex-col", className)}>
@@ -35,18 +43,18 @@ const CeremonyOverview = ({
         <div className="grid grid-cols-3 lg:flex lg:flex-col">
           <AttributeCard
             title="Total participants"
-            value="400"
+            value={totalParticipants}
             isLoading={isLoading}
           />
           <AttributeCard
             title="People in the queue"
-            value="368"
+            value={peopleInQueue}
             removeBorderBottom
             isLoading={isLoading}
           />
           <AttributeCard
             title="Penalty"
-            value={ceremony?.penalty ?? "N/A"}
+            value={penalty}
             removeBorderBottom
             isLoading={isLoading}
           />
@@ -67,6 +75,11 @@ export default function ProjectPage() {
   const { slug } = useParams();
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
   const { data: ceremony, isLoading } = useGetCeremonyByPrefix(slug as string);
+  const { data: ceremonyArtifacts, isLoading: isLoadingArtifacts } =
+    useGetCeremonyArtifacts(slug as string);
+
+  const totalParticipants = ceremonyArtifacts?.participants?.length ?? 0;
+
 
   return (
     <>
@@ -79,9 +92,11 @@ export default function ProjectPage() {
         className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10"
       >
         <CeremonyOverview
-          isLoading={isLoading}
-          ceremony={ceremony}
           className="lg:h-[calc(100vh-280px)] lg:flex hidden"
+          totalParticipants={totalParticipants}
+          penalty={ceremony?.penalty ?? "N/A"}
+          peopleInQueue={0}
+          isLoading={isLoadingArtifacts || isLoading}
         />
         <div className="flex flex-col gap-10 lg:gap-[60px]">
           <div className="flex flex-col col gap-6">
@@ -141,7 +156,9 @@ export default function ProjectPage() {
 
                 <CeremonyOverview
                   isLoading={isLoading}
-                  ceremony={ceremony}
+                  totalParticipants={totalParticipants}
+                  penalty={ceremony?.penalty ?? "N/A"}
+                  peopleInQueue={0}
                   className="lg:hidden block"
                 />
 
@@ -209,7 +226,7 @@ export default function ProjectPage() {
               {
                 id: "about",
                 title: "About",
-                content: null,
+                content: <AboutSection id={ceremony?.prefix ?? ""} />,
               },
               {
                 id: "download-zkey",

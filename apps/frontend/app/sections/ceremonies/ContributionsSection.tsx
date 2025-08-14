@@ -48,6 +48,8 @@ export const ContributionsSection = ({ id }: { id: string }) => {
     },
   ];
 
+  console.log("contributions", contributions);
+
   return (
     <Card radius="xs" size="sm">
       <div className="flex flex-col gap-4">

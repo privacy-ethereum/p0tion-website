@@ -40,17 +40,16 @@ export const LiveStatsSection = ({ id }: { id: string }) => {
                 removeBorderBottom
                 size="sm"
                 title="Avg Contribution Time"
-                value={`${stat?.avgTimingContribution ?? "N/A"}s`}
+                value={stat?.avgTimingContribution ?? 0}
+                timeInMinutes
               />
-              {/*
-              todo: show time in minutes
-              */}
               <AttributeCard
                 removeBorderBottom
                 removeBorderLeft
                 size="sm"
                 title="Max Contribution Time"
-                value={`${stat?.maxTiming ?? "N/A"}s`}
+                value={stat?.maxTiming ?? 0}
+                timeInMinutes
               />
             </div>
           </Card>
