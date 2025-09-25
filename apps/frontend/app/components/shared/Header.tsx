@@ -5,12 +5,36 @@ import { Button } from "../ui/Button";
 import Link from "next/link";
 import { Icons } from "./Icons";
 import { Modal } from "../ui/Modal";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { signInWithGitHub, signOutWithGitHub } from "@/app/helpers/p0tion";
+import { StateContext } from "@/app/context/StateContext";
 
 export const Header = () => {
-  const isLoggedIn = false;
+  const { user, setUser } = useContext(StateContext);
   const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
-  const [selectedLoginMethod, setSelectedLoginMethod] = useState<"github" | "ethereum" | "bandada" | null>(null);
+  const [selectedLoginMethod, setSelectedLoginMethod] = useState<
+    "github" | "ethereum" | "bandada" | null
+  >("github");
+
+  const loginWithGitHubMutation = useMutation({
+    mutationFn: async () => {
+      const user = await signInWithGitHub();
+      console.log("user", user);
+   
+      return user;
+    },
+  });
+
+  const logoutWithGitHubMutation = useMutation({
+    mutationFn: async () => await signOutWithGitHub(),
+  });
+
+  const handleLogin = async () => {
+    if (selectedLoginMethod === "github") {
+      await loginWithGitHubMutation.mutateAsync();
+    }
+  };
 
   return (
     <>
@@ -42,12 +66,15 @@ export const Header = () => {
                 Github
               </Button>
               <Button
-                variant={selectedLoginMethod === "ethereum" ? "yellow" : "white"}
+                variant={
+                  selectedLoginMethod === "ethereum" ? "yellow" : "white"
+                }
                 fontWeight="regular"
                 size="xs"
                 className="!px-5"
                 onClick={() => setSelectedLoginMethod("ethereum")}
                 icon={<Icons.Ethereum />}
+                disabled
               >
                 Ethereum
               </Button>
@@ -57,6 +84,7 @@ export const Header = () => {
                 size="xs"
                 onClick={() => setSelectedLoginMethod("bandada")}
                 icon={<Icons.Bandada />}
+                disabled
               >
                 Bandada
               </Button>
@@ -69,6 +97,7 @@ export const Header = () => {
             icon={<Icons.ArrowRight className="!text-white" />}
             iconPosition="right"
             disabled={!selectedLoginMethod}
+            onClick={handleLogin}
           >
             Login
           </Button>
@@ -85,7 +114,7 @@ export const Header = () => {
               unoptimized
             />
           </Link>
-          {isLoggedIn ? (
+          {false ? (
             <Button
               fontWeight="medium"
               variant="outline-white"
@@ -96,7 +125,6 @@ export const Header = () => {
           ) : (
             <Button
               className="uppercase"
-              disabled
               onClick={() => setIsOpenLoginModal(true)}
             >
               Login

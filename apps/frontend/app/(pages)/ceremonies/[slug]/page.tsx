@@ -80,7 +80,6 @@ export default function ProjectPage() {
 
   const totalParticipants = ceremonyArtifacts?.participants?.length ?? 0;
 
-
   return (
     <>
       <ContributeCliModal
@@ -113,7 +112,9 @@ export default function ProjectPage() {
                   </Chip>
                 )}
                 {ceremony?.state === CeremonyState.FINALIZED && (
-                  <Chip variant="gray">Closed</Chip>
+                  <Chip variant="gray" className="capitalize">
+                    {ceremony?.state?.toLowerCase()}
+                  </Chip>
                 )}
               </SkeletonWrapper>
               <SkeletonWrapper
@@ -162,52 +163,58 @@ export default function ProjectPage() {
                   className="lg:hidden block"
                 />
 
-                <div className="border-b border-black lg:my-5"></div>
-                <div className="flex flex-col gap-6 ">
-                  <div className="flex flex-col">
-                    <SkeletonWrapper
-                      isLoading={isLoading}
-                      placeholder={
-                        <>
-                          <div className="lg:w-1/2 w-full h-[16px] bg-slate-300 animate-pulse mb-1"></div>
-                          <div className="lg:w-2/3 w-full h-[16px] bg-slate-300 animate-pulse "></div>
-                        </>
-                      }
-                    >
-                      <span className="text-black text-base font-normal">
-                        Press contribute to join the ceremony
-                      </span>
-                      <span className="text-gray italic text-sm font-normal">
-                        *If contributing on your phone, please do not leave the
-                        current browser tab.
-                      </span>
-                    </SkeletonWrapper>
-                  </div>
-                  <div className="flex flex-col lg:flex-row gap-4">
-                    <SkeletonWrapper
-                      isLoading={isLoading}
-                      placeholder={
-                        <>
-                          <div className="lg:w-[200px] w-full h-[40px] bg-slate-300 animate-pulse rounded-full"></div>
-                          <div className="lg:w-[200px] w-full h-[40px] bg-slate-300 animate-pulse rounded-full"></div>
-                        </>
-                      }
-                    >
-                      <Link href={`/ceremonies/${ceremony?.prefix}/contribute`}>
-                        <Button variant="black" className="uppercase">
-                          Contribute on Browser
-                        </Button>
-                      </Link>
-                      <Button
-                        variant="black"
-                        className="uppercase"
-                        onClick={() => setIsOpenLoginModal(true)}
-                      >
-                        Contribute with CLI{" "}
-                      </Button>
-                    </SkeletonWrapper>
-                  </div>
-                </div>
+                {ceremony?.state === CeremonyState.OPENED && (
+                  <>
+                    <div className="border-b border-black lg:my-5"></div>
+                    <div className="flex flex-col gap-6 ">
+                      <div className="flex flex-col">
+                        <SkeletonWrapper
+                          isLoading={isLoading}
+                          placeholder={
+                            <>
+                              <div className="lg:w-1/2 w-full h-[16px] bg-slate-300 animate-pulse mb-1"></div>
+                              <div className="lg:w-2/3 w-full h-[16px] bg-slate-300 animate-pulse "></div>
+                            </>
+                          }
+                        >
+                          <span className="text-black text-base font-normal">
+                            Press contribute to join the ceremony
+                          </span>
+                          <span className="text-gray italic text-sm font-normal">
+                            *If contributing on your phone, please do not leave
+                            the current browser tab.
+                          </span>
+                        </SkeletonWrapper>
+                      </div>
+                      <div className="flex flex-col lg:flex-row gap-4">
+                        <SkeletonWrapper
+                          isLoading={isLoading}
+                          placeholder={
+                            <>
+                              <div className="lg:w-[200px] w-full h-[40px] bg-slate-300 animate-pulse rounded-full"></div>
+                              <div className="lg:w-[200px] w-full h-[40px] bg-slate-300 animate-pulse rounded-full"></div>
+                            </>
+                          }
+                        >
+                          <Link
+                            href={`/ceremonies/${ceremony?.prefix}/contribute`}
+                          >
+                            <Button variant="black" className="uppercase">
+                              Contribute on Browser
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="black"
+                            className="uppercase"
+                            onClick={() => setIsOpenLoginModal(true)}
+                          >
+                            Contribute with CLI{" "}
+                          </Button>
+                        </SkeletonWrapper>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

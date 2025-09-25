@@ -47,7 +47,8 @@ export const CeremoniesSection = () => {
   const showOpenCeremonies =
     openCeremonies.length > 0 && !isLoadingOpenCeremonies;
   const showClosedCeremonies =
-    closedCeremonies.length > 0 && !isLoadingClosedCeremonies;
+    closedCeremonies.length > MAX_CLOSED_CEREMONIES_WITHOUT_EXPAND &&
+    !isLoadingClosedCeremonies;
 
   return (
     <div className="bg-light-base">
@@ -65,21 +66,27 @@ export const CeremoniesSection = () => {
               items={2}
               placeholder={<CeremonyCardPlaceholder />}
             >
-              {openCeremonies?.map((ceremony: CeremonyData) => (
-                <Link
-                  href={`/ceremonies/${ceremony.prefix}`}
-                  key={ceremony.uid}
-                >
-                  <CeremonyCard
+              {openCeremonies?.length == 0 ? (
+                <>
+                  <span className="text-black text-base font-normal">No open ceremonies</span>
+                </>
+              ) : (
+                openCeremonies?.map((ceremony: CeremonyData) => (
+                  <Link
+                    href={`/ceremonies/${ceremony.prefix}`}
                     key={ceremony.uid}
-                    title={ceremony.title}
-                    description={ceremony.description}
-                    startDate={ceremony.startDate.toString()}
-                    endDate={ceremony.endDate.toString()}
-                    status={ceremony.state}
-                  />
-                </Link>
-              ))}
+                  >
+                    <CeremonyCard
+                      key={ceremony.uid}
+                      title={ceremony.title}
+                      description={ceremony.description}
+                      startDate={ceremony.startDate.toString()}
+                      endDate={ceremony.endDate.toString()}
+                      status={ceremony.state}
+                    />
+                  </Link>
+                ))
+              )}
             </SkeletonWrapper>
           </div>
         </Card>
@@ -114,7 +121,7 @@ export const CeremoniesSection = () => {
                 ))}
               </SkeletonWrapper>
             </div>
-            {!isLoadingClosedCeremonies && (
+            {showClosedCeremonies && (
               <Button
                 className="uppercase mx-auto"
                 variant="black"

@@ -6,6 +6,8 @@ interface ContributeFlowerStepsProps {
       done?: boolean;
     };
   };
+  currentCircuit?: number;
+  totalCircuits?: number;
 }
 
 export const ContributeFlowerSteps = ({
