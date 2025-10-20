@@ -11,24 +11,25 @@ import { signInWithGitHub, signOutWithGitHub } from "@/app/helpers/p0tion";
 import { StateContext } from "@/app/context/StateContext";
 
 export const Header = () => {
-  const { user, setUser } = useContext(StateContext);
-  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
+  const { user, setUser, isOpenLoginModal, setIsOpenLoginModal } = useContext(StateContext);
   const [selectedLoginMethod, setSelectedLoginMethod] = useState<
     "github" | "ethereum" | "bandada" | null
   >("github");
 
   const loginWithGitHubMutation = useMutation({
     mutationFn: async () => {
-      const user = await signInWithGitHub();
-      console.log("user", user);
-   
+      const res = await signInWithGitHub();
+      if (setUser) setUser(res);
+      if (setIsOpenLoginModal) setIsOpenLoginModal(false);
       return user;
     },
   });
 
-  const logoutWithGitHubMutation = useMutation({
-    mutationFn: async () => await signOutWithGitHub(),
-  });
+  const handleLogout = async () => {
+    await signOutWithGitHub();
+    if (setUser) setUser(undefined);
+    return undefined;
+  };
 
   const handleLogin = async () => {
     if (selectedLoginMethod === "github") {
@@ -39,8 +40,8 @@ export const Header = () => {
   return (
     <>
       <Modal
-        isOpen={isOpenLoginModal}
-        onClose={() => setIsOpenLoginModal(false)}
+        isOpen={isOpenLoginModal ?? false}
+        onClose={() => setIsOpenLoginModal?.(false)}
       >
         <div className="flex flex-col gap-16">
           <div className="flex flex-col gap-[34px]">
@@ -114,22 +115,19 @@ export const Header = () => {
               unoptimized
             />
           </Link>
-          {false ? (
-            <Button
-              fontWeight="medium"
-              variant="outline-white"
-              icon={<Icons.ArrowRight className="text-white" />}
-            >
-              Discord
-            </Button>
-          ) : (
-            <Button
-              className="uppercase"
-              onClick={() => setIsOpenLoginModal(true)}
-            >
-              Login
-            </Button>
-          )}
+
+          <Button
+            className="uppercase"
+            onClick={() => {
+              if (user) {
+                handleLogout();
+              } else {
+                setIsOpenLoginModal?.(true);
+              }
+            }}
+          >
+            {user ? "Logout" : "Login"}
+          </Button>
         </div>
       </header>
     </>

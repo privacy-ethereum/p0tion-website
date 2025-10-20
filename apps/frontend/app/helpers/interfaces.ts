@@ -531,6 +531,10 @@ export interface State {
   user?: string;
   setUser?: React.Dispatch<React.SetStateAction<string | undefined>>;
   waitingQueue: WaitingQueue[];
+  isOpenLoginModal?: boolean;
+  setIsOpenLoginModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  attestationLink: string;
+  setAttestationLink: React.Dispatch<React.SetStateAction<string>>;
 }
 
 /**

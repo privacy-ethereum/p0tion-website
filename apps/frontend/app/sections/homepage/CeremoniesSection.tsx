@@ -68,24 +68,29 @@ export const CeremoniesSection = () => {
             >
               {openCeremonies?.length == 0 ? (
                 <>
-                  <span className="text-black text-base font-normal">No open ceremonies</span>
+                  <span className="text-black text-base font-normal">
+                    No open ceremonies
+                  </span>
                 </>
               ) : (
-                openCeremonies?.map((ceremony: CeremonyData) => (
-                  <Link
-                    href={`/ceremonies/${ceremony.prefix}`}
-                    key={ceremony.uid}
-                  >
-                    <CeremonyCard
+                openCeremonies?.map((ceremony: CeremonyData) => {
+                  console.log("ceremony", ceremony);
+                  return (
+                    <Link
+                      href={`/ceremonies/${ceremony.prefix}`}
                       key={ceremony.uid}
-                      title={ceremony.title}
-                      description={ceremony.description}
-                      startDate={ceremony.startDate.toString()}
-                      endDate={ceremony.endDate.toString()}
-                      status={ceremony.state}
-                    />
-                  </Link>
-                ))
+                    >
+                      <CeremonyCard
+                        key={ceremony.uid}
+                        title={ceremony.title}
+                        description={ceremony.description}
+                        startDate={ceremony.startDate.toString()}
+                        endDate={ceremony.endDate.toString()}
+                        status={ceremony.state}
+                      />
+                    </Link>
+                  );
+                })
               )}
             </SkeletonWrapper>
           </div>

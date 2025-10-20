@@ -19,10 +19,11 @@ import {
 import { CeremonyData, CeremonyState } from "@/app/types";
 import { SkeletonWrapper } from "@/app/components/layouts/SkeletonWrapper";
 import { cn } from "@/app/lib/utils";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ContributeCliModal } from "@/app/components/modals/ContributeCliModal";
-import Link from "next/link";
 import { AboutSection } from "@/app/sections/ceremonies/AboutSection";
+import { StateContext } from "@/app/context/StateContext";
+import { contribute } from "@/app/helpers/p0tion";
 
 const CeremonyOverview = ({
   isLoading,
@@ -73,18 +74,50 @@ const CeremonyOverview = ({
 
 export default function ProjectPage() {
   const { slug } = useParams();
-  const [isOpenLoginModal, setIsOpenLoginModal] = useState(false);
-  const { data: ceremony, isLoading } = useGetCeremonyByPrefix(slug as string);
+  const { user, setIsOpenLoginModal, setAttestationLink } = useContext(StateContext);
+  const [status, setStatus] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isOpenContributeModal, setIsOpenContributeModal] = useState(false);
+  const { data: ceremony, isLoading: isLoadingCeremony } =
+    useGetCeremonyByPrefix(slug as string);
   const { data: ceremonyArtifacts, isLoading: isLoadingArtifacts } =
     useGetCeremonyArtifacts(slug as string);
 
   const totalParticipants = ceremonyArtifacts?.participants?.length ?? 0;
 
+  const handleChanges = (
+    message: string,
+    loading?: boolean,
+    attestationLink?: string
+  ) => {
+    setStatus(message);
+    if (typeof loading === "boolean") setIsLoading(loading);
+    if (typeof attestationLink === "string") {
+      setAttestationLink(attestationLink);
+    }
+  };
+
+  console.log("status", status);
+
+  const contributeViaBrowser = () => {
+    contribute(ceremony?.prefix ?? "", handleChanges);
+    // `/ceremonies/${ceremony?.prefix}/contribute`
+  };
+
+  const onContributeViaBrowser = () => {
+    if (!user) {
+      if (setIsOpenLoginModal) setIsOpenLoginModal(true);
+    }
+    contributeViaBrowser();
+    // `/ceremonies/${ceremony?.prefix}/contribute`
+  };
+
   return (
     <>
       <ContributeCliModal
-        isOpen={isOpenLoginModal}
-        onClose={() => setIsOpenLoginModal(false)}
+        isOpen={isOpenContributeModal}
+        onClose={() => setIsOpenContributeModal(false)}
       />
       <AppContent
         containerClassName="bg-light-base py-10 lg:py-[140px]"
@@ -196,17 +229,17 @@ export default function ProjectPage() {
                             </>
                           }
                         >
-                          <Link
-                            href={`/ceremonies/${ceremony?.prefix}/contribute`}
-                          >
-                            <Button variant="black" className="uppercase">
-                              Contribute on Browser
-                            </Button>
-                          </Link>
                           <Button
                             variant="black"
                             className="uppercase"
-                            onClick={() => setIsOpenLoginModal(true)}
+                            onClick={onContributeViaBrowser}
+                          >
+                            Contribute on Browser
+                          </Button>
+                          <Button
+                            variant="black"
+                            className="uppercase"
+                            onClick={() => setIsOpenContributeModal(true)}
                           >
                             Contribute with CLI{" "}
                           </Button>

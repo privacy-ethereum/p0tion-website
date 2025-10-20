@@ -9,7 +9,7 @@ import Link from "next/link";
 export const AboutSection = ({ id }: { id: string }) => {
   const { data: ceremonyStats, isLoading } = useGetCeremonyStats(id as string);
 
-  console.log("ceremonyStats", id, ceremonyStats);
+  
 
   return (
     <div className="flex flex-col gap-5">
@@ -32,6 +32,9 @@ export const AboutSection = ({ id }: { id: string }) => {
                   circuit?.template?.paramConfiguration?.length > 0
                 ? circuit?.template?.paramConfiguration?.join(" ")
                 : "No parameters";
+
+
+                console.log("circuit", circuit)
           return (
             <Card
               key={index}

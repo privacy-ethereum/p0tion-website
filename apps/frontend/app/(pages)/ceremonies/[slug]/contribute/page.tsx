@@ -16,9 +16,9 @@ export default function ContributePage() {
   const steps = {
     1: { loading: false, done: true, currentCircuit: 5, totalCircuits: 32 },
     2: { loading: false, done: true, currentCircuit: 10, totalCircuits: 32 },
-    3: { loading: true, done: false, currentCircuit: 10, totalCircuits: 32 },
-    4: { loading: false, done: false, currentCircuit: 10, totalCircuits: 32 },
-    5: { loading: false, done: false, currentCircuit: 10, totalCircuits: 32 },
+    3: { loading: true, done: true, currentCircuit: 10, totalCircuits: 32 },
+    4: { loading: false, done: true, currentCircuit: 10, totalCircuits: 32 },
+    5: { loading: true, done: false, currentCircuit: 10, totalCircuits: 32 },
     6: { loading: false, done: false, currentCircuit: 10, totalCircuits: 32 },
   }
 
@@ -27,7 +27,7 @@ export default function ContributePage() {
   const circuits = steps[currentStep].totalCircuits;
   const currentCircuitStep = steps[currentStep].currentCircuit;
   const currentCircuitPercentage = currentCircuitStep / circuits * 100;
-  const ceremonyCompleted = false;
+  const ceremonyCompleted = true;
 
   if (ceremonyCompleted) {
     return (

@@ -45,7 +45,7 @@ export const CeremonyDate = ({
       )}
       {formattedEndDate && (
         <>
-          <span className="lg:ml-0 ml-1">{`Finish date: ${formattedEndDate}`}</span>
+          <span>{`Finish date: ${formattedEndDate}`}</span>
         </>
       )}
     </span>

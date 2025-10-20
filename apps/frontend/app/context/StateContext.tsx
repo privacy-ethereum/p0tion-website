@@ -18,7 +18,11 @@ export const StateContext = createContext<State>({
   runTutorial: false,
   setRunTutorial: () => null,
   setUser: () => {},
-  waitingQueue: [{} as WaitingQueue]
+  waitingQueue: [{} as WaitingQueue],
+  isOpenLoginModal: false,
+  setIsOpenLoginModal: () => null,
+  attestationLink: "",
+  setAttestationLink: () => null,
 });
 
 export const useInitialStateContext = () => {
@@ -28,13 +32,14 @@ export const useInitialStateContext = () => {
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [runTutorial, setRunTutorial] = useState<boolean>(false);
-
+  
+  
 
   return { waitingQueue, projects, setProjects, circuit, setCircuit, search, setSearch, loading, setLoading, runTutorial, setRunTutorial };
 };
 
 export const StateProvider: React.FC<StateProviderProps> = ({ children }) => {
-
+  const [isOpenLoginModal, setIsOpenLoginModal] = useState<boolean>(false);
   const [user, setUser] = useState<string | undefined>(
     localStorage.getItem("username") || undefined
   );
@@ -51,7 +56,7 @@ export const StateProvider: React.FC<StateProviderProps> = ({ children }) => {
 
   return (
     // @ts-ignore
-    <StateContext.Provider value={{...state, user, setUser }}>
+    <StateContext.Provider value={{...state, user, setUser, isOpenLoginModal, setIsOpenLoginModal }}>
       {children}
     </StateContext.Provider>
   );
